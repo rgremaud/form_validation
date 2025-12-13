@@ -6,6 +6,33 @@
     <title>Document</title>
 </head>
 <body>
+    <!-- 
+    Build a browser form which collects Email, Country, Postal Code, Password and Password Confirmation fields. 
+    form should have novalidate so javascript does all the work
+    form inputs:
+            Email
+            Country
+            Postal Code
+            Password
+            Password Confirmation
+    -->
+    <form novalidate>
+        <p>
+            <label for="mail">
+                <span>Please enter an email address *:</span>
+                <input type="email" id="mail" name="mail" required minlength="8" />
+                <span class="error" aria-live="polite"></span>
+            </label>
+        </p>
+        <p>
+            <label>
+                <span>Please enter your country code: </span>
+                <input type="text" id="country" name="country" required minlength="2" maxlength="2"></input>
+                <span class="error" aria-live="polite"></span>
+            </label>
+        </p>
+  <button>Submit</button>
+</form>
     
 </body>
 </html>
