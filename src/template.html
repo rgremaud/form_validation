@@ -8,17 +8,7 @@
 </head>
 
 <body>
-    <!-- 
-    Build a browser form which collects Email, Country, Postal Code, Password and Password Confirmation fields. 
-    form should have novalidate so javascript does all the work
-    form inputs:
-            Email
-            Country
-            Postal Code
-            Password
-            Password Confirmation
-    -->
-    <form novalidate>
+    <form novalidate id="form">
         <p>
             <label for="mail">
                 <span>Please enter an email address *:</span>
@@ -293,7 +283,7 @@
             <label for="password">
                 <span>Password (8 characters minimum):</span>
                 <input id="password" name="password" type="password" minlength="8" required>
-                <span></span>
+                <span class="error" aria-live="polite"></span>
             </label>
         </p>
         <p>

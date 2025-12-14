@@ -25,4 +25,66 @@ Don’t forget to style validations with CSS by using the :valid and :invalid ps
 
 // There are many ways to pick a DOM node; here we get the form itself and the email
 // input box, as well as the span element into which we will place the error message.
+const form = document.getElementsByTagName("form")[0];
 
+const email = document.getElementById("mail");
+const emailError = document.querySelector("#mail + span.error");
+const password = document.getElementById("password");
+const passwordError = document.querySelector("#password + span.error");
+
+password.addEventListener("input", (event) => {
+    if(password.validity.valid) {
+        passwordError.innerHTML = "";
+        passwordError.className = "error";
+    } else {
+        showPassError();
+    }
+})
+
+email.addEventListener("input", (event) => {
+
+  if (email.validity.valid) {
+    emailError.innerHTML = ""; // Reset the content of the message
+    emailError.className = "error"; // Reset the visual state of the message
+  } else {
+    showEmailError();
+  }
+});
+
+form.addEventListener("submit", (event) => {
+
+  if (!email.validity.valid) {
+    showEmailError();
+    event.preventDefault();
+  }
+
+  if (!password.validity.valid) { 
+    showPassError();
+    event.preventDefault();
+  }
+});
+
+function showEmailError() {
+  if (email.validity.valueMissing) {
+    emailError.textContent = "You need to enter an email address.";
+  } else if (email.validity.typeMismatch) {
+    emailError.textContent = "Entered value needs to be an email address.";
+  } else if (email.validity.tooShort) {
+    emailError.textContent = `Email should be at least ${email.minLength} characters; you entered ${email.value.length}.`;
+  }
+
+  emailError.className = "error active";
+}
+
+function showPassError() {
+    if (password.validity.maxLength) {
+        passwordError.textContent = "Password must have a length of 8."
+        // triggers but doesn't show error text
+    }
+
+    passwordError.className = "error active";
+}
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+});
