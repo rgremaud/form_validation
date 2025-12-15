@@ -29,15 +29,63 @@ const form = document.getElementsByTagName("form")[0];
 
 const email = document.getElementById("mail");
 const emailError = document.querySelector("#mail + span.error");
+
 const password = document.getElementById("password");
 const passwordError = document.querySelector("#password + span.error");
 
+const passwordConfirm = document.getElementById("passwordConfirm");
+const passwordConfirmError = document.querySelector("#passwordConfirm + span.error");
+
+const country = document.getElementById("country");
+const countryError = document.querySelector("#country + span.error");
+
+const postal = document.getElementById("postal");
+const postalError = document.querySelector("#postal + span.error");
+
+postal.addEventListener("input", (event) => {
+    if(country.value = "United States") {
+        const regex = /(^\d{5}$)|(^\d{5}-\d{4}$)/
+        postal.setAttribute('pattern', regex.source)
+    }
+
+    if(postal.validity.valid) {
+        postalError.innerHTML = "";
+        postalError.className = "error";
+    } else {
+        showPostalError();
+    }
+})
+
+country.addEventListener("select", (event) => {
+
+    if(country.validity.valid) { 
+        countryError.innerHTML = "";
+        countryError.className = "error";
+    } else { 
+        showCountryError();
+    }
+})
+
 password.addEventListener("input", (event) => {
+
     if(password.validity.valid) {
         passwordError.innerHTML = "";
         passwordError.className = "error";
     } else {
         showPassError();
+    }
+})
+
+passwordConfirm.addEventListener("input", (event) => {
+    const password = document.getElementById("password");
+    const passwordValue = password.value;
+    password.setAttribute('pattern', passwordValue);
+
+    if(passwordConfirm.validity.valid) {
+        passwordConfirmError.innerHTML = "";
+        passwordConfirmError.className = "error";
+    } else {
+        showPassConfirmError();
     }
 })
 
@@ -62,6 +110,21 @@ form.addEventListener("submit", (event) => {
     showPassError();
     event.preventDefault();
   }
+
+  if (!passwordConfirm.validity.valid) {
+    showPassConfirmError();
+    event.preventDefault();
+  }
+
+  if (!country.validity.valid) {
+    showCountryError();
+    event.preventDefault();
+  }
+
+  if (!postal.validity.valid) {
+    showPostalError();
+    event.preventDefault();
+  }
 });
 
 function showEmailError() {
@@ -77,12 +140,32 @@ function showEmailError() {
 }
 
 function showPassError() {
-    if (password.validity.maxLength) {
-        passwordError.textContent = "Password must have a length of 8."
+    if (password.validity.tooShort) {
+        passwordError.textContent = "Password must have a length of 8.";
         // triggers but doesn't show error text
     }
 
     passwordError.className = "error active";
+}
+
+function showCountryError() {
+    if (country.validity.valueMissing) {
+        countryError.textContent = "Don't forget to select your country!"
+    }
+
+    countryError.className = "error active";
+}
+
+function showPostalError() { 
+    if (postal.validity.patternMismatch) {
+        postalError.textContent = `Postal code does not pattern for ${country.value}`
+    }
+}
+
+function showPassConfirmError() {
+    if (passwordConfirm.validity.patternMismatch) {
+        passwordConfirmError.textContent = "Password doesn't match!";
+    }
 }
 
 form.addEventListener("submit", (e) => {
